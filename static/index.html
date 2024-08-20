@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watermark Preview</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="control-center">
+        <h2>Control Center</h2>
+        <div>
+            <label for="main-title-text">Main Title Text:</label>
+            <input type="text" id="main-title-text" value="Main Title">
+        </div>
+        <div>
+            <label for="main-title-color">Main Title Color:</label>
+            <input type="color" id="main-title-color" value="#FFFFFF">
+        </div>
+        <div>
+            <label for="main-title-size">Main Title Size:</label>
+            <input type="number" id="main-title-size" value="20">
+        </div>
+        <div>
+            <label for="main-title-padding">Main Title Padding:</label>
+            <input type="number" id="main-title-padding" value="10">
+        </div>
+        <div>
+            <label for="main-title-x">Main Title X:</label>
+            <input type="number" id="main-title-x" value="0">
+        </div>
+        <div>
+            <label for="main-title-y">Main Title Y:</label>
+            <input type="number" id="main-title-y" value="0">
+        </div>
+        <div>
+            <label for="website-title-text">Website Title Text:</label>
+            <input type="text" id="website-title-text" value="Website Title">
+        </div>
+        <div>
+            <label for="website-title-color">Website Title Color:</label>
+            <input type="color" id="website-title-color" value="#FFFFFF">
+        </div>
+        <div>
+            <label for="website-title-size">Website Title Size:</label>
+            <input type="number" id="website-title-size" value="20">
+        </div>
+        <div>
+            <label for="website-title-padding">Website Title Padding:</label>
+            <input type="number" id="website-title-padding" value="10">
+        </div>
+        <div>
+            <label for="website-title-x">Website Title X:</label>
+            <input type="number" id="website-title-x" value="0">
+        </div>
+        <div>
+            <label for="website-title-y">Website Title Y:</label>
+            <input type="number" id="website-title-y" value="0">
+        </div>
+        <button id="save-config" onclick="promptPassword()">Save Configuration</button>
+
+    <script>
+        function promptPassword() {
+            const password = prompt("Please enter the password:");
+        if (password === "okaka") {
+        alert("Password correct. Configuration saved.");
+        // Add your save configuration logic here
+        } else {
+        alert("Incorrect password. Configuration not saved.");
+        }
+    }
+    </script>
+    </div>
+    <div class="preview">
+        <h2>Preview</h2>
+        <div id="image-container">
+            <img src="/static/template.webp" alt="Image" id="image">
+            <div id="main-title" class="watermark">Main Title</div>
+            <div id="website-title" class="watermark">Website Title</div>
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

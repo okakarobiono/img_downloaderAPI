@@ -1,0 +1,1 @@
+http://localhost:8000/download-image?query=Durian&main_title=Bahaya Makan Banyak Durian&website_title=ailabs.web.id&filename=Durian-Enak
