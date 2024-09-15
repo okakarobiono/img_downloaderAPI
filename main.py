@@ -33,6 +33,7 @@ from pydantic import BaseModel, ValidationError
 import aiohttp
 from aiohttp import ClientError
 from fastapi.staticfiles import StaticFiles
+from typing import Optional
 
 certifi_path = certifi.where()
 app = FastAPI(
@@ -60,12 +61,14 @@ class Position(BaseModel):
     left: int
     top: int
 
+
 class TitleConfig(BaseModel):
     text: str
     color: str
     size: int
     padding: int
     position: Position
+    backgroundColor: Optional[str] = None
 
 class Config(BaseModel):
     mainTitle: TitleConfig

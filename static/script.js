@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const mainTitle = document.getElementById('main-title');
+    const mainTitleBgColor = document.getElementById('main-title-bg-color');
     const websiteTitle = document.getElementById('website-title');
     const imageContainer = document.getElementById('image-container');
     const image = document.getElementById('image');
@@ -28,15 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
     image.style.width = '100%';
     image.style.height = '100%';
 
-    function updateWatermark(element, text, color, size, padding, x, y) {
-        element.textContent = text;
-        element.style.color = color;
-        element.style.fontSize = `${size}px`;
-        element.style.padding = `${padding}px`;
-        element.style.left = `${x}px`;
-        element.style.top = `${y}px`;
-        element.style.display = 'block';
-    }
+    function updateWatermark(element, text, color, bgColor, size, padding, x, y) {
+    element.textContent = text;
+    element.style.color = color;
+    element.style.backgroundColor = bgColor;
+    element.style.fontSize = `${size}px`;
+    element.style.padding = `${padding}px`;
+    element.style.left = `${x}px`;
+    element.style.top = `${y}px`;
+    element.style.display = 'block';
+}
 
     function constrainValue(value, min, max) {
         return Math.min(Math.max(value, min), max);
@@ -44,29 +46,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function addInputListeners(textInput, colorInput, sizeInput, paddingInput, xInput, yInput, element) {
         textInput.addEventListener('input', () => {
-            updateWatermark(element, textInput.value, colorInput.value, sizeInput.value, paddingInput.value, xInput.value, yInput.value);
+            updateWatermark(element, textInput.value, colorInput.value, mainTitleBgColor.value, sizeInput.value, paddingInput.value, xInput.value, yInput.value);
         });
-
+        mainTitleBgColor.addEventListener('input', () => {
+            updateWatermark(element, textInput.value, colorInput.value, mainTitleBgColor.value, sizeInput.value, paddingInput.value, xInput.value, yInput.value);
+        });
         colorInput.addEventListener('input', () => {
-            updateWatermark(element, textInput.value, colorInput.value, sizeInput.value, paddingInput.value, xInput.value, yInput.value);
+            updateWatermark(element, textInput.value, colorInput.value, mainTitleBgColor.value, sizeInput.value, paddingInput.value, xInput.value, yInput.value);
         });
 
         sizeInput.addEventListener('input', () => {
-            updateWatermark(element, textInput.value, colorInput.value, sizeInput.value, paddingInput.value, xInput.value, yInput.value);
+            updateWatermark(element, textInput.value, colorInput.value, mainTitleBgColor.value, sizeInput.value, paddingInput.value, xInput.value, yInput.value);
         });
 
         paddingInput.addEventListener('input', () => {
-            updateWatermark(element, textInput.value, colorInput.value, sizeInput.value, paddingInput.value, xInput.value, yInput.value);
+            updateWatermark(element, textInput.value, colorInput.value, mainTitleBgColor.value, sizeInput.value, paddingInput.value, xInput.value, yInput.value);
         });
 
         xInput.addEventListener('input', () => {
             xInput.value = constrainValue(xInput.value, 0, originalWidth - element.offsetWidth);
-            updateWatermark(element, textInput.value, colorInput.value, sizeInput.value, paddingInput.value, xInput.value, yInput.value);
+            updateWatermark(element, textInput.value, colorInput.value, mainTitleBgColor.value, sizeInput.value, paddingInput.value, xInput.value, yInput.value);
         });
 
         yInput.addEventListener('input', () => {
             yInput.value = constrainValue(yInput.value, 0, originalHeight - element.offsetHeight);
-            updateWatermark(element, textInput.value, colorInput.value, sizeInput.value, paddingInput.value, xInput.value, yInput.value);
+           updateWatermark(element, textInput.value, colorInput.value, mainTitleBgColor.value, sizeInput.value, paddingInput.value, xInput.value, yInput.value);
         });
     }
 
@@ -118,13 +122,14 @@ document.addEventListener('DOMContentLoaded', () => {
             mainTitle: {
                 text: mainTitleText.value,
                 color: mainTitleColor.value,
+                backgroundColor: mainTitleBgColor.value || '#000000', // Default hitam jika tidak diisi
                 size: parseInt(mainTitleSize.value),
                 padding: parseInt(mainTitlePadding.value),
                 position: {
-                    left: parseInt(mainTitleX.value),
-                    top: parseInt(mainTitleY.value)
-                }
-            },
+                left: parseInt(mainTitleX.value),
+                top: parseInt(mainTitleY.value)
+            }
+        },
             websiteTitle: {
                 text: websiteTitleText.value,
                 color: websiteTitleColor.value,
@@ -159,29 +164,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    fetch('http://127.0.0.1:8000/load-configuration') // Ensure the correct URL and port
-        .then(response => response.json())
-        .then(config => {
-            if (config.mainTitle) {
-                mainTitleText.value = config.mainTitle.text;
-                mainTitleColor.value = config.mainTitle.color;
-                mainTitleSize.value = config.mainTitle.size;
-                mainTitlePadding.value = config.mainTitle.padding;
-                mainTitleX.value = config.mainTitle.position.left;
-                mainTitleY.value = config.mainTitle.position.top;
-                updateWatermark(mainTitle, config.mainTitle.text, config.mainTitle.color, config.mainTitle.size, config.mainTitle.padding, config.mainTitle.position.left, config.mainTitle.position.top);
-            }
-            if (config.websiteTitle) {
-                websiteTitleText.value = config.websiteTitle.text;
-                websiteTitleColor.value = config.websiteTitle.color;
-                websiteTitleSize.value = config.websiteTitle.size;
-                websiteTitlePadding.value = config.websiteTitle.padding;
-                websiteTitleX.value = config.websiteTitle.position.left;
-                websiteTitleY.value = config.websiteTitle.position.top;
-                updateWatermark(websiteTitle, config.websiteTitle.text, config.websiteTitle.color, config.websiteTitle.size, config.websiteTitle.padding, config.websiteTitle.position.left, config.websiteTitle.position.top);
-            }
-        })
-        .catch(error => {
-            console.error('Error loading configuration:', error);
-        });
+    fetch('http://127.0.0.1:8000/load-configuration')
+    .then(response => response.json())
+    .then(config => {
+        if (config.mainTitle) {
+            mainTitleText.value = config.mainTitle.text;
+            mainTitleColor.value = config.mainTitle.color;
+            mainTitleSize.value = config.mainTitle.size;
+            mainTitlePadding.value = config.mainTitle.padding;
+            mainTitleX.value = config.mainTitle.position.left;
+            mainTitleY.value = config.mainTitle.position.top;
+            updateWatermark(mainTitle, config.mainTitle.text, config.mainTitle.color, config.mainTitle.backgroundColor, config.mainTitle.size, config.mainTitle.padding, config.mainTitle.position.left, config.mainTitle.position.top);
+        }
+        if (config.websiteTitle) {
+            websiteTitleText.value = config.websiteTitle.text;
+            websiteTitleColor.value = config.websiteTitle.color;
+            websiteTitleSize.value = config.websiteTitle.size;
+            websiteTitlePadding.value = config.websiteTitle.padding;
+            websiteTitleX.value = config.websiteTitle.position.left;
+            websiteTitleY.value = config.websiteTitle.position.top;
+            updateWatermark(websiteTitle, config.websiteTitle.text, config.websiteTitle.color, config.websiteTitle.backgroundColor, config.websiteTitle.size, config.websiteTitle.padding, config.websiteTitle.position.left, config.websiteTitle.position.top);
+        }
+    })
+    .catch(error => {
+        console.error('Error loading configuration:', error);
+    });
 });

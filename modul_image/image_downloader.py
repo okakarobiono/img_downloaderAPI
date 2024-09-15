@@ -15,17 +15,35 @@ from module_api_key.config_api import BING_API_KEY
 
 console = Console()
 
-def adjust_text_position(text, default_position, max_width, is_main_title=False):
-    text_width = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0][0]
-    if is_main_title:
-        max_x = 730 - text_width
-        new_x = max(2, min(default_position[0], max_x))
-    else:
-        if text_width > max_width:
-            new_x = max(0, default_position[0] - (text_width - max_width) / 2)
+def adjust_text_position(text, default_position, max_width, is_main_title=False, font=cv2.FONT_HERSHEY_SIMPLEX,
+                         font_scale=1, thickness=2, line_spacing=10, img_width=1200, img_height=760):
+    lines = []
+    current_line = ""
+    for word in text.split():
+        test_line = current_line + " " + word if current_line else word
+        (test_width, _), _ = cv2.getTextSize(test_line, font, font_scale, thickness)
+        if test_width <= max_width:
+            current_line = test_line
         else:
-            new_x = default_position[0]
-    return (int(new_x), default_position[1])
+            lines.append(current_line)
+            current_line = word
+    lines.append(current_line)
+
+    total_height = sum([cv2.getTextSize(line, font, font_scale, thickness)[0][1] for line in lines]) + (
+                len(lines) - 1) * line_spacing
+
+    min_left_margin = 20
+    max_right_margin = img_width - 20
+
+    if is_main_title:
+        new_x = max(min_left_margin, min(default_position[0],
+                           max_right_margin - max(cv2.getTextSize(line, font, font_scale, thickness)[0][0] for line in lines)))
+    else:
+        new_x = max(min_left_margin, min(default_position[0], max_right_margin - cv2.getTextSize(lines[0], font, font_scale, thickness)[0][0]))
+
+    new_y = max(total_height, min(default_position[1], img_height - 20))
+
+    return (int(new_x), int(new_y)), lines
 
 def loading_animation(message):
     with Progress(
