@@ -1,0 +1,31 @@
+Initialize Git (if not already initialized):
+
+git init
+
+Add the remote repository:
+
+git remote add origin https://gitlab.com/Okarobiono/duckduckgoapiimg.git
+
+Add all changes to the staging area:
+
+git add .
+
+Commit the changes:
+
+git commit -m "Add new features and improvements"
+
+Push the changes to the okaka branch:
+
+git push origin okaka
+
+
+
+To resolve the error "remote origin already exists," you can either update the existing remote URL or remove the existing remote and add it again.
+Option 1: Update the existing remote URL
+
+git remote set-url origin https://gitlab.com/Okarobiono/ImageServerAPI
+
+Option 2: Remove the existing remote and add it again
+
+git remote remove origin
+git remote add origin https://gitlab.com/Okarobiono/ImageServerAPI

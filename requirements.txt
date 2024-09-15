@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+requests
+Pillow
+beautifulsoup4
+rich
+aiohttp
+certifi
+pydantic
+opencv-python-headless
+numpy
+fastbook
+starlette
+aiofiles
